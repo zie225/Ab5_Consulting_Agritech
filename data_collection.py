@@ -1,0 +1,90 @@
+# -*- coding: utf-8 -*-
+"""
+Created on Mon Nov 22 20:50:18 2021
+
+@author: Mc Zie
+"""
+import datetime
+import time
+import board
+import busio
+i2c = busio.I2C(board.SCL, board.SDA)
+import csv
+import adafruit_ads1x15.ads1015 as ADS
+#import adafruit_ads1x15.ads1115 as ADS
+
+from adafruit_ads1x15.analog_in import AnalogIn
+
+
+slope = 1.48; #slope from linear fit
+intercept = -1.56 # intercept from linear fit
+
+ads = ADS.ADS1015(i2c)
+
+chan = AnalogIn(ads, ADS.P0)
+#voltage=chan.voltage
+
+while True: 
+    try: 
+        print( 'voltage:')
+        print(f'{chan.voltage} Volt')
+        
+        vol_water_cont = ((1.0/chan.voltage)*slope)+intercept #calc of theta_v (vol. water content)
+
+        print(" V, Theta_v: ")
+        print(f'{vol_water_cont} cm^3/cm^3')
+        
+        
+        
+        def get_voltage(): 
+            
+            voltage = round((chan.voltage),2) 
+           
+            voltage = str(voltage) 
+            
+            return(voltage)
+        
+        def get_humidity():
+            
+            humidity = vol_water_cont
+            humidity= round(humidity)
+            
+            humidity = str(humidity) 
+           
+            return(humidity)
+        
+        def date_now():
+           today = datetime.datetime.now().strftime("%Y-%m-%d")
+           today = str(today)
+           return(today)
+        
+        def time_now():
+            
+            now = datetime.datetime.now().strftime("%H:%M:%S")
+            now = str(now)
+            return(now)
+
+        def write_to_csv():
+            
+            #the a is for append, if w for write is used then it overwrites the file
+            with open('/home/pi/sensor_readings.csv', mode='a') as sensor_readings: 
+                
+                sensor_write = csv.writer(sensor_readings, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
+                write_to_log = sensor_write.writerow([date_now(),time_now(),get_voltage(),get_humidity()])
+                return(write_to_log) 
+            
+        print( write_to_csv())
+
+
+
+        time.sleep(.5) 
+        
+        
+        
+        
+ 
+    except KeyboardInterrupt: 
+        break 
+    except IOError: 
+        print ("Error") 
+
