@@ -47,7 +47,7 @@ while True:
         def get_humidity():
             
             humidity = vol_water_cont
-            humidity= round(humidity)
+            humidity= round((humidity),2)
             
             humidity = str(humidity) 
            
@@ -74,7 +74,7 @@ while True:
                 return(write_to_log) 
             
         print( write_to_csv())
-
+        
 
 
         time.sleep(.5) 
