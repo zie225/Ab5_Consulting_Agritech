@@ -26,15 +26,20 @@ chan = AnalogIn(ads, ADS.P0)
 
 while True: 
     try: 
+        voltage = round((chan.voltage),2)
         print( 'voltage:')
         print(f'{chan.voltage} Volt')
         
         vol_water_cont = ((1.0/chan.voltage)*slope)+intercept #calc of theta_v (vol. water content)
-
+        vol_water_cont= round((vol_water_cont),2)
         print(" V, Theta_v: ")
         print(f'{vol_water_cont} cm^3/cm^3')
         
-        
+        if vol_water_cont>-0.40:
+            print('wet')
+        else: 
+            
+            print('dry')
         
         def get_voltage(): 
             
@@ -63,26 +68,29 @@ while True:
             now = datetime.datetime.now().strftime("%H:%M:%S")
             now = str(now)
             return(now)
-
+        
+        def get_humidity_binary():
+            
+            if vol_water_cont>-0.40:
+                
+                return str('wet')
+            else: 
+                return str('dry') 
+           
+        
         def write_to_csv():
             
             #the a is for append, if w for write is used then it overwrites the file
             with open('/home/pi/sensor_readings.csv', mode='a') as sensor_readings: 
                 
                 sensor_write = csv.writer(sensor_readings, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
-                write_to_log = sensor_write.writerow([date_now(),time_now(),get_voltage(),get_humidity()])
+                write_to_log = sensor_write.writerow([date_now(),time_now(),get_voltage(), get_humidity(),get_humidity_binary()])
                 return(write_to_log) 
             
         print( write_to_csv())
         
-
-
-        time.sleep(.5) 
+        time.sleep(1) 
         
-        
-        
-        
- 
     except KeyboardInterrupt: 
         break 
     except IOError: 
