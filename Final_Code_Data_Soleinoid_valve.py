@@ -321,9 +321,35 @@ while True:
             else: 
                 return  GPIO.output(s1, GPIO.HIGH) #turn solenoid 1 on
             
+        
+            
                 time.sleep(1)
                 
                 print(soleinoi_off_on())
+                
+                
+                
+    #if we need to extend the irrigation, 
+    #we will change the value of time.sleep () for example for one hour, 
+    #we will have 3600 seconds so time.sleep (3600)
+    # the sensor value will read each one hour 
+    #For industrial we will use temporisator to extend the watering
+                
+        def soleinoi_off_on_extension():  
+            
+            if predict[0]>0.5: 
+                
+                return  GPIO.output(s1, GPIO.LOW) #turn solenoid 1 off
+            
+                time.sleep(3600)
+            else: 
+                return  GPIO.output(s1, GPIO.HIGH) #turn solenoid 1 on
+            
+        
+            
+                time.sleep(3600)
+                
+                print(soleinoi_off_on_extension())
             
             """
             GPIO.output(s2, GPIO.HIGH) #turn solenoid 2 on
