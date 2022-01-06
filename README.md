@@ -6,5 +6,4 @@ Indeed, the capacitive soil moisture sensor manufacturer DFROBOT and RASBERRY PI
 Then we develop backend applications and software (artificial intelligence) supporting farmers in their farming practices. 
 The objective here is to automate the irrigation by means of a solenoid valve, for this we use deep learning algorithms because of the volume of data that we had collected with the soil moisture sensor, we had used the artificial neural network to predict whether the soil will be wet or dry, it’s the classification problem. This binary result will be preprocessed for the prediction. It is in this context that we created an algorithm to automatically operate the solenoid valve.
 With the prediction of the wet / dry binary system, we will couple with turn off / turn on of solenoid valve.
-Keywords: Sensors comparison, measurement, instrumentation, soil moisture, liquid, DFROBOT,
-RASBERRY PI, artificial intelligence, deep learning, artificial neural network, algorithm, solenoid valve.
+
